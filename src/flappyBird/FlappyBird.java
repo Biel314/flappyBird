@@ -63,10 +63,12 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener{
 	 
 	 Timer gameLoop;
 	 Timer placePipesTimer;
+	 Timer test;
 	 
 	 boolean gameOver = false;
 	 double score = 0;
-	 
+	 int imageIndex = 0;
+
 	 
 	 FlappyBird(){
 		 setPreferredSize(new Dimension(boardWidth, boardHeigth));
@@ -76,10 +78,18 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener{
 		 addKeyListener(this);
 		 
 		 backgroundImg = new ImageIcon(getClass().getResource("flappybirdbg.png")).getImage();
-		 birdImg = new ImageIcon(getClass().getResource("flappybird.png")).getImage();
+//		 birdImg = new ImageIcon(getClass().getResource("flappybird.png")).getImage();
 		 topPipeImg = new ImageIcon(getClass().getResource("toppipe.png")).getImage();
 		 bottomPipeImg = new ImageIcon(getClass().getResource("bottompipe.png")).getImage();
 		 
+		 String[] images = {"flappybird-0.png", "flappybird-1.png","flappybird-2.png"};
+		 
+		 Image[] icons = new Image[3];
+		 for (int i = 0; i < 3; i++) {
+			icons[i] = new ImageIcon(getClass().getResource(images[i])).getImage();
+		}
+		 
+		 birdImg = icons[0];
 		 
 		 //Bird
 		 bird = new Bird(birdImg);
@@ -93,6 +103,15 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener{
 			 }
 		 });
 		 placePipesTimer.start();
+		 
+		 test = new Timer(100, new ActionListener() {
+			 @Override
+			 public void actionPerformed(ActionEvent e) {
+				 bird.img = icons[imageIndex++];
+				 imageIndex = imageIndex >= 3 ? 0 : imageIndex;
+			 }
+		 });
+		 test.start();
 		 
 		 gameLoop = new Timer(1000/60, this);
 		 gameLoop.start();
